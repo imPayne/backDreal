@@ -1,11 +1,4 @@
-const mysql = require("mysql");
-
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "MatferDreal61",
-  database: "dreal",
-});
+const connection = require('./connection');
 
 const queries = [
   {
@@ -22,7 +15,7 @@ const queries = [
   {
     name: "storage",
     sql:
-      "CREATE TABLE IF NOT EXISTS storage ( " +
+      "CREATE TABLE IF NOT EXISTS storage (" +
       "id int(11) DEFAULT NULL, " +
       "zone_id int(11) DEFAULT NULL, " +
       "`level` varchar(100) DEFAULT NULL, " +
@@ -30,8 +23,8 @@ const queries = [
       "StorageMassBois int(11) DEFAULT NULL, " +
       "StorageMassPlastique int(11) DEFAULT NULL, " +
       "StorageMassPD int(11) DEFAULT NULL, " +
-      "UNIQUE KEY id (id), Key zone_id (zone_id), " +
-      "CONSTRAINT `storageFK1` FOREIGN KEY (`zone_id`) REFERENCES `zone` (`id`) ON DELETE CASCADE ON UPDATE CASCADE);",
+      "PRIMARY KEY (id), " +
+      "FOREIGN KEY (zone_id) REFERENCES zone(id));",
   },
   {
     name: "zone",
@@ -44,14 +37,13 @@ const queries = [
       "zone_width int(11) DEFAULT NULL, " +
       "zone_height int(11) DEFAULT NULL, " +
       "alley varchar(45) DEFAULT NULL, " +
-      "`column` varchar(45) DEFAULT NULL, " +
-      "PRIMARY KEY (id), " +
-      "KEY building_id (building_id), " +
-      "CONSTRAINT `zoneFK1` FOREIGN KEY (`building_id`) REFERENCES `building` (`building_id`) ON DELETE CASCADE ON UPDATE CASCADE);",
+      "`column` varchar(45) DEFAULT NULL,  " +
+      "PRIMARY KEY (id), "+ 
+      "FOREIGN KEY (building_id) REFERENCES building(building_id));",
   },
 ];
 
-function createTable() {
+function createTable(connection) {
   connection.connect(function (err) {
     if (err) throw err;
     console.log("Connected!");

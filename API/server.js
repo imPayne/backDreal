@@ -6,20 +6,13 @@ const mysql = require("mysql");
 const csv = require("csv-parser");
 const fs = require("fs");
 const init = require("./tableHandler");
-const { exit } = require("process");
+const connection = require('./connection');
 
-init.createTable();
-
-/*const connection = mysql.createConnection({
-  host: "localhost",
-  user: "yornletard",
-  password: "8ebea8Lx1",
-  database: "dreal",
-});
+init.createTable(connection);
 
 var zones = [];
 
-class Area {
+/**class Area {
   constructor(posX, posY, width, height) {
     this._posX = posX;
     this._posY = posY;
@@ -89,7 +82,7 @@ function getBuildingId(row) {
 
 function sendDataBuildings() {
   //permet d'initialiser la table Buildings dans la DB
-  var query = "INSERT INTO Buildings SET ?";
+  var query = "INSERT INTO building SET ?";
   var array = [
     { building_id: 1, posX: 90, posY: 50, width: 2315, height: 1040 },
     { building_id: 2, posX: 60, posY: 1150, width: 460, height: 530 },
@@ -132,8 +125,8 @@ fs.createReadStream(csvFile)
       alley: row.alley,
       column: row.column,
     };
-    var queryZone = "INSERT INTO Zone SET ?";
-    var queryStorage = "INSERT INTO Storage SET ?";
+    var queryZone = "INSERT INTO zone SET ?";
+    var queryStorage = "INSERT INTO storage SET ?";
     var storageZoneId;
 
     var index = zones.findIndex(function (z) {
@@ -147,8 +140,8 @@ fs.createReadStream(csvFile)
     } else {
       zones[index].addStorage(storage);
     }
-    connection.query(
-      "SELECT `id` FROM Zone WHERE ?",
+      connection.query(
+      "SELECT `id` FROM zone WHERE ?",
       [{ alley: row.alley }, { column: row.column }],
       function (err, result, fields) {
         if (err) throw err;
@@ -166,15 +159,14 @@ fs.createReadStream(csvFile)
 
   .on("end", () => {
     console.log(
-      "CSV file successfully processed and Data inserted in Zone and Storage"
+      "CSV file successfully processed and Data inserted in zone and storage"
     );
   });
 
 app.get("/", (req, res) => {
   res.json({ message: "Root page ready" });
-});
+});*/
 
 app.listen(port, () => {
   console.log(`Running at port ${port}`);
 });
-*/
