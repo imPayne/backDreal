@@ -8,6 +8,8 @@ const fs = require("fs");
 const init = require("./tableHandler");
 const connection = require('./connection');
 
+init.createTable(connection);
+
 
 var zones = [];
 
@@ -134,7 +136,7 @@ fs.createReadStream(csvFile)
     if (index == -1) {
       zone.addStorage(storage);
       zones.push(zone);
-      //connection.query(queryZone, paramsZone);
+      connection.query(queryZone, paramsZone);
     } else {
       zones[index].addStorage(storage);
     }
@@ -150,6 +152,7 @@ fs.createReadStream(csvFile)
           level: row.level,
           storageData: row.storage,
         };
+        console.log(paramsStorage.level, paramsStorage.storageData, paramsStorage.zone_id);
         var queryStorage = "INSERT INTO storage SET ?";
         connection.query(queryStorage, paramsStorage);
         console.log(paramsStorage.zone_id);

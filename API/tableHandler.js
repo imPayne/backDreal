@@ -23,8 +23,8 @@ const queries = [
       "StorageMassBois int(11) DEFAULT NULL, " +
       "StorageMassPlastique int(11) DEFAULT NULL, " +
       "StorageMassPD int(11) DEFAULT NULL, " +
-      "PRIMARY KEY (id), " +
-      "FOREIGN KEY (zone_id) REFERENCES zone(id));",
+      "PRIMARY KEY (id)); ",
+      //"",
   },
   {
     name: "zone",
@@ -38,8 +38,8 @@ const queries = [
       "zone_height int(11) DEFAULT NULL, " +
       "alley varchar(45) DEFAULT NULL, " +
       "`column` varchar(45) DEFAULT NULL,  " +
-      "PRIMARY KEY (id), "+ 
-      "FOREIGN KEY (building_id) REFERENCES building(building_id));",
+      "PRIMARY KEY (id)); ", 
+      //"FOREIGN KEY (building_id) REFERENCES building(building_id));",
   },
 ];
 
