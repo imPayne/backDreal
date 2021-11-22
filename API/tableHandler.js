@@ -54,6 +54,7 @@ function createTable(connection) {
       });
     });
   });
+  return (true);
 }
 
 module.exports = { createTable };

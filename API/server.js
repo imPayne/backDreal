@@ -8,11 +8,10 @@ const fs = require("fs");
 const init = require("./tableHandler");
 const connection = require('./connection');
 
-init.createTable(connection);
 
 var zones = [];
 
-/**class Area {
+class Area {
   constructor(posX, posY, width, height) {
     this._posX = posX;
     this._posY = posY;
@@ -126,7 +125,6 @@ fs.createReadStream(csvFile)
       column: row.column,
     };
     var queryZone = "INSERT INTO zone SET ?";
-    var queryStorage = "INSERT INTO storage SET ?";
     var storageZoneId;
 
     var index = zones.findIndex(function (z) {
@@ -136,7 +134,7 @@ fs.createReadStream(csvFile)
     if (index == -1) {
       zone.addStorage(storage);
       zones.push(zone);
-      connection.query(queryZone, paramsZone);
+      //connection.query(queryZone, paramsZone);
     } else {
       zones[index].addStorage(storage);
     }
@@ -145,16 +143,21 @@ fs.createReadStream(csvFile)
       [{ alley: row.alley }, { column: row.column }],
       function (err, result, fields) {
         if (err) throw err;
+
         storageZoneId = result[0].id;
-        console.log(storageZoneId);
+        var paramsStorage = {
+          zone_id: storageZoneId,
+          level: row.level,
+          storageData: row.storage,
+        };
+        var queryStorage = "INSERT INTO storage SET ?";
+        connection.query(queryStorage, paramsStorage);
+        console.log(paramsStorage.zone_id);
       }
     ); //récupère l'id Zone grâce à l'alley et le current alley
-    var paramsStorage = {
-      zone_id: storageZoneId,
-      level: row.level,
-      storage: row.storage,
-    };
-    connection.query(queryStorage, paramsStorage);
+    
+    //console.log(storageZoneId);
+    //connection.query(queryStorage, paramsStorage);
   })
 
   .on("end", () => {
@@ -165,7 +168,7 @@ fs.createReadStream(csvFile)
 
 app.get("/", (req, res) => {
   res.json({ message: "Root page ready" });
-});*/
+});
 
 app.listen(port, () => {
   console.log(`Running at port ${port}`);
